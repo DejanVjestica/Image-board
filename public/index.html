@@ -2,10 +2,30 @@
 <html>
 <head>
     <title></title>
+	<link rel="stylesheet" href="/styles.css">
 </head>
 <body>
+	<!-- Vue app -->
+	<div id="main">
+		<h1>{{title}}</h1>
+		<h2>{{heading}}</h2>
+		<div class="flexContainer" v-if="images.length > 0">
+			<div class=" image" v-for="image in images" >
+				<img v-bind:src="image.url" alt="">
+				<h3>{{image.title}}</h3>
+				<p>{{image.username}}</p>
+
+
+			</div>
+		</div>
+	</div>
+
+	<!-- js scripts -->
     <script src="/js/vue.js"></script>
     <script src="/js/axios.min.js"></script>
     <script src="/js/script.js"></script>
 </body>
 </html>
+
+<!-- <h2>{{image.title}}</h2>
+<h4>{{image.username}}</h4> -->
