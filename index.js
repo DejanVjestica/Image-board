@@ -3,21 +3,85 @@
 const express = require("express");
 const app = express();
 const db = require("./db");
+const s3 = require("./s3");
+const config = require("./config");
 // public files ----------------------------------------
 app.use(express.static("./public"));
 
+const multer = require("multer");
+const uidSafe = require("uid-safe");
+const path = require("path");
+
+const diskStorage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        callback(null, __dirname + "/uploads");
+    },
+    filename: function(req, file, callback) {
+        uidSafe(24).then(function(uid) {
+            callback(null, uid + path.extname(file.originalname));
+        });
+    }
+});
+
+const uploader = multer({
+    storage: diskStorage,
+    limits: {
+        fileSize: 2097152
+    }
+});
+
 app.get("/images", (req, res) => {
+    console.log("in route /images ");
     db
         .getImages()
         .then(result => {
-            console.log(result);
+            // res.json(result.rows);
+            // console.log(result.rows);
             res.json({
                 images: result.rows
             });
         })
         .catch(function(err) {
-            console.log("In route /cities ", err);
+            console.log("In route /images ", err);
         });
+});
+
+app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
+    // console.log(req.body.title);
+    // console.log(req.body.description);
+    // console.log(req.body.username);
+    console.log(config.s3Url + req.file.filename);
+    db
+        .insertImage(
+            req.body.title,
+            req.body.description,
+            req.body.username,
+            config.s3Url + req.file.filename
+        )
+        .then(function(results) {
+            res.json({
+                url: req.file.filename,
+                id: results.rows[0].id,
+                title: req.body.title,
+                description: req.body.description,
+                username: req.body.username
+            });
+        })
+        .catch(function(err) {
+            console.log("In route /upload ", err);
+        });
+
+    // if (req.file) {
+    // s3Upload(req.files).then(() => {
+    //     return db.insertImage();
+    // });
+    // res.json({ img: req.file.filename });
+    // } else {
+    // }
+    //
+    // insertIma#ge(url, username, title, description);
+    // res.json({ img: req.file.filename });
+    // console.log("index.js: ");
 });
 // ===============  End of server ==================
 app.listen(8080, () => console.log("Listening"));

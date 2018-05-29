@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title></title>
+    <title>Image Board</title>
 	<link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -9,13 +9,29 @@
 	<div id="main">
 		<h1>{{title}}</h1>
 		<h2>{{heading}}</h2>
+		<section class="uploadFIle">
+
+			<input v-model="imgFormInfo.inputTitle" type="text" placeholder="title">
+
+			<input v-model="imgFormInfo.inputDescription" type="text" placeholder="description">
+
+			<input v-model="imgFormInfo.inputUsername" type="text" placeholder="username">
+			<!-- upload file -->
+			<input v-on:change="selectFile" type="file" name="file">
+			<!-- submit button -->
+			<input v-on:click="uploadImage" type="submit" value="Submit">
+		</section>
+		<!-- <p>{{imgFormInfo.inputTitle}}</p>
+		<p>{{imgFormInfo.inputDescription}}</p>
+		<p>{{imgFormInfo.inputUsername}}</p> -->
+
+
 		<div class="flexContainer" v-if="images.length > 0">
-			<div class=" image" v-for="image in images" >
+			<div class="image" v-for="image in images" >
 				<img v-bind:src="image.url" alt="">
 				<h3>{{image.title}}</h3>
+				<p>{{image.description}}</p>
 				<p>{{image.username}}</p>
-
-
 			</div>
 		</div>
 	</div>

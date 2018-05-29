@@ -16,5 +16,9 @@ body {
     margin-right: 1em;
 }
 .image img {
-    max-width: 300px;
+    max-width: 100%;
+    max-height: 200px;
+}
+.uploadFIle {
+    padding: 1em 0;
 }
