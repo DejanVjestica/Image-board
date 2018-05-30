@@ -50,13 +50,23 @@
 	</script> -->
 	<script id="modal-template" type="text/x-template">
 		<div class="modal">
-		    <h1>{{ heading }}</h1>
-			<!-- <button>X</button> -->
-			<button v-on:click="closeModal">X</button>
-			<!-- <p>
-				{{currentImageId}}
-			</p> -->
 
+		    <!-- <h1>{{ heading }}</h1> -->
+			<img v-bind:src="image.url" >
+			<p>{{image.title}}</p>
+			<p>{{image.username}}</p>
+			<p>{{image.created_at}}</p>
+			<button v-on:click="closeModal">X</button>
+
+			<!-- comments input -->
+			<aside class="comments">
+				<input v-model="commentForm.comment" type="text" name="comment" placeholder="comment">
+				<input v-model="commentForm.username" type="text" name="username" placeholder="username">
+				<!-- submit button -->
+				<input v-on:click="uploadComment" type="submit" value="Submit">
+			</aside>
+			<!-- <p>{{commentForm.comment}}</p>
+			<p>{{commentForm.username}}</p> -->
 		</div>
 	</script>
 	<!-- js scripts -->

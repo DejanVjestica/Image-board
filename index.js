@@ -28,6 +28,9 @@ const uploader = multer({
         fileSize: 2097152
     }
 });
+const bodyParser = require("body-parser");
+
+app.use(bodyParser.json());
 app.use(express.static("./public"));
 
 app.get("/images", (req, res) => {
@@ -45,7 +48,7 @@ app.get("/images", (req, res) => {
 });
 
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
-    console.log("inside upload: ", req.file);
+    // console.log("inside upload: ", req.file);
     db
         .insertImage(
             req.body.title,
@@ -64,10 +67,25 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
         });
 });
 app.get("/image/:id", (req, res) => {
-    db.getImageById(req.id).then(function() {
-        console.log("/image/:id ");
-        res.json();
+    db.getImageById(req.params.id).then(function(result) {
+        // console.log("/image/:id ", req);
+        res.json(result.rows[0]);
     });
+});
+app.post("/image/comment", (req, res) => {
+    console.log("/image/comment", req.body.id);
+    //
+    db
+        .uploadComment(req.body.comment, req.body.username, req.body.img_id)
+        .then(function(result) {
+            // console.log(result);
+            res.json({
+                commentForm: result.rows[0]
+            });
+        })
+        .catch(function(err) {
+            console.log("in catch", err);
+        });
 });
 // ===============  End of server ==================
 app.listen(8080, () => console.log("Listening"));

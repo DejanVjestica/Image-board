@@ -80,38 +80,41 @@ new Vue({
 // ----------------------------
 // component image modal ------
 // ----------------------------
-// Vue.component("imagemodal-component", {
-//     /* data, methods, etc. go here */
-//     data: function() {
-//         return {
-//             heading: "Image modal"
-//         };
-//     },
-//     template: ".imagemodal-template"
-// });
+
 Vue.component("modal-component", {
     props: ["id", "currentImageId"],
     data: function() {
         return {
             heading: "modal Component",
-            // image: {
-            //     title: "",
-            //     description: "",
-            //     username: ""
-            // },
-            // commentForm: {
-            //     comment: "",
-            //     username: ""
-            // },
+            image: {
+                title: "",
+                description: "",
+                username: "",
+                url: "",
+                created_at: "",
+                id: null
+            },
+            commentForm: {
+                // id: "",
+                comment: "",
+                username: ""
+            },
             comments: []
         };
     },
     mounted: function() {
-        console.log("modal is open:", this.id);
-        axios.get("/image/" + this.id).catch(function(err) {
-            // getImageById(result.id);
-            console.log(err);
-        });
+        let self = this;
+        // console.log("modal is open:", this.id);
+        axios
+            .get("/image/" + this.id)
+            .then(function(result) {
+                self.image = result.data;
+                // console.log("result");
+            })
+            .catch(function(err) {
+                // getImageById(result.id);
+                console.log(err);
+            });
     },
     methods: {
         // close: function() {
@@ -123,6 +126,23 @@ Vue.component("modal-component", {
             // console.log(this.currentImageId);
             // this.$emit("close", this.id, this.currentImageId);
             this.$emit("close", this.id);
+        },
+        uploadComment: function() {
+            // let self = this;
+            axios
+                .post("/image/comment/", {
+                    comment: this.commentForm.comment,
+                    username: this.commentForm.username,
+                    img_id: this.id
+                })
+                .then(function(result) {
+                    result.json({
+                        commentForm: result.rows[0]
+                    });
+                })
+                .catch(function(err) {
+                    console.log(err);
+                });
         }
         // closeModal: function() {}
     },
