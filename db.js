@@ -1,18 +1,24 @@
 const spicedPg = require("spiced-pg");
-var dbUrl = "postgres:dvjes:postgres@localhost:5432/imageboard";
+const dbUrl = "postgres:dvjes:postgres@localhost:5432/imageboard";
 const db = spicedPg(dbUrl);
 
 exports.getImages = function() {
-    return db.query(`SELECT * FROM images;`);
+    return db.query(`SELECT * FROM images ORDER BY id DESC`);
 };
-exports.insertImage = function(url, username, title, description) {
+// exports.insertImage = function(url, username, title, description) {
+//     return db.query(
+//         `INSERT INTO images (url, username, title, description)
+// 		VALUES ($1, $2, $3, $4) RETURNING id`,
+//         [url, username, title, description]
+//     );
+// };
+exports.insertImage = function(title, description, username, url) {
     return db.query(
-        `INSERT INTO images (url, username, title, description)
-		VALUES ($1, $2, $3, $4) RETURNING id`,
-        [url, username, title, description]
+        `INSERT INTO images (title, description, username, url)
+    VALUES ($1, $2, $3, $4) RETURNING id, title, description, username, url`,
+        [title || null, description || null, username || null, url || null]
     );
 };
-
 // // ========================================================
 // // ================ Login and Registration ================
 // // ========================================================

@@ -6,7 +6,6 @@ const db = require("./db");
 const s3 = require("./s3");
 const config = require("./config");
 // public files ----------------------------------------
-app.use(express.static("./public"));
 
 const multer = require("multer");
 const uidSafe = require("uid-safe");
@@ -29,6 +28,7 @@ const uploader = multer({
         fileSize: 2097152
     }
 });
+app.use(express.static("./public"));
 
 app.get("/images", (req, res) => {
     console.log("in route /images ");
@@ -50,7 +50,7 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     // console.log(req.body.title);
     // console.log(req.body.description);
     // console.log(req.body.username);
-    console.log(config.s3Url + req.file.filename);
+    // console.log(config.s3Url + req.file.filename);
     db
         .insertImage(
             req.body.title,
@@ -59,12 +59,17 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
             config.s3Url + req.file.filename
         )
         .then(function(results) {
+            // console.log(results);
+            console.log("in route /upload then:");
+            // res.json({
+            //     id: results.rows[0].id,
+            //     title: req.body.title,
+            //     description: req.body.description,
+            //     username: req.body.username,
+            //     url: config.s3Url + req.file.filename
+            // });
             res.json({
-                url: req.file.filename,
-                id: results.rows[0].id,
-                title: req.body.title,
-                description: req.body.description,
-                username: req.body.username
+                image: results.rows[0]
             });
         })
         .catch(function(err) {

@@ -2,7 +2,7 @@ const knox = require("knox");
 const fs = require("fs");
 // const secrets = require("./secrets");
 let secrets;
-console.log("secrets: ", secrets);
+// console.log("secrets: ", secrets);
 if (process.env.NODE_ENV == "production") {
     secrets = process.env; // in prod the secrets are environment variables
 } else {
