@@ -35,8 +35,6 @@ app.get("/images", (req, res) => {
     db
         .getImages()
         .then(result => {
-            // res.json(result.rows);
-            // console.log(result.rows);
             res.json({
                 images: result.rows
             });
@@ -48,10 +46,6 @@ app.get("/images", (req, res) => {
 
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
     console.log("inside upload: ", req.file);
-    // console.log(req.body.title);
-    // console.log(req.body.description);
-    // console.log(req.body.username);
-    // console.log(config.s3Url + req.file.filename);
     db
         .insertImage(
             req.body.title,
@@ -60,15 +54,7 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
             config.s3Url + req.file.filename
         )
         .then(function(results) {
-            // console.log(results);
             console.log("in route /upload then:");
-            // res.json({
-            //     id: results.rows[0].id,
-            //     title: req.body.title,
-            //     description: req.body.description,
-            //     username: req.body.username,
-            //     url: config.s3Url + req.file.filename
-            // });
             res.json({
                 image: results.rows[0]
             });
@@ -76,18 +62,12 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
         .catch(function(err) {
             console.log("In route /upload ", err);
         });
-
-    // if (req.file) {
-    // s3Upload(req.files).then(() => {
-    //     return db.insertImage();
-    // });
-    // res.json({ img: req.file.filename });
-    // } else {
-    // }
-    //
-    // insertIma#ge(url, username, title, description);
-    // res.json({ img: req.file.filename });
-    // console.log("index.js: ");
+});
+app.get("/image/:id", (req, res) => {
+    db.getImageById(req.id).then(function() {
+        console.log("/image/:id ");
+        res.json();
+    });
 });
 // ===============  End of server ==================
 app.listen(8080, () => console.log("Listening"));

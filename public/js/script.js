@@ -1,3 +1,6 @@
+// ------------------------
+// main vue instance ------
+// ------------------------
 new Vue({
     el: "#main",
     data: {
@@ -11,7 +14,8 @@ new Vue({
             username: "",
             url: null
         },
-        images: []
+        images: [],
+        currentImageId: ""
     },
     mounted: function() {
         // console.log(images);
@@ -22,6 +26,18 @@ new Vue({
         });
     },
     methods: {
+        openModal: function(imageId) {
+            console.log("open modal");
+            this.currentImageId = imageId;
+        },
+        closeModal: function(e) {
+            console.log("modal is closed:", this.id);
+            this.$emit("close", this.id, e.target.value);
+        },
+        // closeModal: function(e) {
+        //     this.$emit("close", this.id, e.target.value);
+        //     // this.currentImageId = "";
+        // },
         selectFile: function(e) {
             console.log("in method select file");
             this.imgFormInfo.url = e.target.files[0];
@@ -57,4 +73,51 @@ new Vue({
                 });
         }
     }
+});
+// ----------------------------
+// component image modal ------
+// ----------------------------
+// Vue.component("imagemodal-component", {
+//     /* data, methods, etc. go here */
+//     data: function() {
+//         return {
+//             heading: "Image modal"
+//         };
+//     },
+//     template: ".imagemodal-template"
+// });
+Vue.component("modal-component", {
+    props: ["id", "currentImageId"],
+    data: function() {
+        return {
+            heading: "modal Component",
+            image: {
+                title: "",
+                description: "",
+                username: ""
+            },
+            // commentForm: {
+            //     comment: "",
+            //     username: ""
+            // },
+            comments: []
+        };
+    },
+    mounted: function() {
+        console.log("modal is open:", this.id);
+        axios.get("/image/" + this.id).then(function(result) {
+            // getImageById(result.id);
+        });
+    },
+    methods: {
+        // closeModal: function(e) {
+        //     console.log("modal is closed:", this.id);
+        //     this.$emit("close", this.id, e.target.value);
+        // }
+        // openModal: function() {
+        //     console.log("open modal");
+        // }
+        // closeModal: function() {}
+    },
+    template: "#modal-template"
 });

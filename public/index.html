@@ -7,37 +7,56 @@
 <body>
 	<!-- Vue app -->
 	<div id="main">
+		<!-- header -->
 		<h1>{{title}}</h1>
 		<h2>{{heading}}</h2>
+		<!-- Upload file form -->
 		<section class="uploadFIle">
-
+			<!-- title -->
 			<input v-model="imgFormInfo.title" type="text" name="title" placeholder="title">
-
+			<!-- description -->
 			<input v-model="imgFormInfo.description" type="text" name="description" placeholder="description">
-
+			<!-- username -->
 			<input v-model="imgFormInfo.username" type="text" name="username" placeholder="username">
 			<!-- upload file -->
 			<input v-on:change="selectFile" type="file" name="file">
 			<!-- submit button -->
 			<input v-on:click="uploadImage" type="submit" value="Submit">
 		</section>
-		<!-- <p>{{imgFormInfo.inputTitle}}</p>
-		<p>{{imgFormInfo.inputDescription}}</p>
-		<p>{{imgFormInfo.inputUsername}}</p> -->
-
-
+		<!-- display images -->
 		<div class="flexContainer" v-if="images.length > 0">
 			<div class="image" v-for="image in images" >
-				<img v-bind:src="image.url" alt="">
+				<img v-bind:src="image.url" v-on:click="openModal(image.id)">
 				<h3>{{image.title}}</h3>
 				<p>{{image.description}}</p>
 				<p>Uploaded by {{image.username}}</p>
 			</div>
 		</div>
+		<!-- imagemodal -->
+		<modal-component
+			v-if="currentImageId"
+			v-bind:id="currentImageId"
+		></modal-component>
+		<!-- <modal-component></modal-component> -->
+		<!-- <imagemodal-component></imagemodal-component> -->
 	</div>
 	<!-- vue components -->
-	<script class="" type="text/x-template">
+	<!-- <script class="imagemodal-template" type="text/x-template">
+		<div>
+		    <h1>{{ heading }}</h1>
+		    <p>This is a component!!!</p>
+		</div>
+	</script> -->
+	<script id="modal-template" type="text/x-template">
+		<div class="modal">
+		    <h1>{{ heading }}</h1>
+			<button>X</button>
+			<!-- <button v-on:click="closeModal">X</button> -->
+			<!-- <p>
+				{{currentImageId}}
+			</p> -->
 
+		</div>
 	</script>
 	<!-- js scripts -->
     <script src="/js/vue.js"></script>
@@ -45,6 +64,3 @@
     <script src="/js/script.js"></script>
 </body>
 </html>
-
-<!-- <h2>{{image.title}}</h2>
-<h4>{{image.username}}</h4> -->

@@ -19,6 +19,15 @@ exports.insertImage = function(title, description, username, url) {
         [title || null, description || null, username || null, url || null]
     );
 };
+
+exports.getImageById = function(id) {
+    return db.query(
+        `
+		SELECT * FROM images WHERE id=$1
+		`,
+        [id]
+    );
+};
 // // ========================================================
 // // ================ Login and Registration ================
 // // ========================================================
