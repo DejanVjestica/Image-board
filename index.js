@@ -47,6 +47,7 @@ app.get("/images", (req, res) => {
 });
 
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
+    console.log("inside upload: ", req.file);
     // console.log(req.body.title);
     // console.log(req.body.description);
     // console.log(req.body.username);

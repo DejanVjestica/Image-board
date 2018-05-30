@@ -9,11 +9,14 @@ body {
     display: flex;
     flex-wrap: wrap;
 }
+.flexContainer > * {
+    width: 30%;
+}
 
 .image {
-    flex: 1;
+    flex: 1 30%;
     border: 1px solid black;
-    margin-right: 1em;
+    margin: 0 1em 1em 0;
 }
 .image img {
     max-width: 100%;

@@ -16,6 +16,7 @@ const client = knox.createClient({
 
 exports.upload = function(req, res, next) {
     if (!req.file) {
+        console.log("no file find");
         return res.sendStatus(500);
     }
     //
@@ -34,6 +35,7 @@ exports.upload = function(req, res, next) {
             // fs.uplink(req.file.path, () => {});
             next();
         } else {
+            console.log("in the respons something went wrong");
             console.log(s3Response.statusCode);
             res.sendStatus(500);
         }

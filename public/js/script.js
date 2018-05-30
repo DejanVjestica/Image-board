@@ -24,7 +24,7 @@ new Vue({
     methods: {
         selectFile: function(e) {
             console.log("in method select file");
-            this.imgFormInfo.inputImg = e.target.files[0];
+            this.imgFormInfo.url = e.target.files[0];
         },
         uploadImage: function(e) {
             console.log("in method upload image");
@@ -43,11 +43,11 @@ new Vue({
                     console.log("result of axios ", results, fd);
                     // this.images.push(fd);
                     this.images.unshift({
-                        id: results.data.id,
+                        id: results.data.image.id,
                         title: this.imgFormInfo.title,
                         description: this.imgFormInfo.description,
                         username: this.imgFormInfo.username,
-                        img: results.data.url
+                        img: results.data.image.url
                     });
                     // this.images.unshift(results.data.image);
                     console.log(results.data.images);
