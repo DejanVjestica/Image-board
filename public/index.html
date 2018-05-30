@@ -36,6 +36,7 @@
 		<modal-component
 			v-if="currentImageId"
 			v-bind:id="currentImageId"
+			v-on:close="closeModal"
 		></modal-component>
 		<!-- <modal-component></modal-component> -->
 		<!-- <imagemodal-component></imagemodal-component> -->
@@ -50,8 +51,8 @@
 	<script id="modal-template" type="text/x-template">
 		<div class="modal">
 		    <h1>{{ heading }}</h1>
-			<button>X</button>
-			<!-- <button v-on:click="closeModal">X</button> -->
+			<!-- <button>X</button> -->
+			<button v-on:click="closeModal">X</button>
 			<!-- <p>
 				{{currentImageId}}
 			</p> -->

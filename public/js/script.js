@@ -15,7 +15,12 @@ new Vue({
             url: null
         },
         images: [],
-        currentImageId: ""
+        currentImageId: "",
+        image: {
+            title: "",
+            description: "",
+            username: ""
+        }
     },
     mounted: function() {
         // console.log(images);
@@ -30,14 +35,12 @@ new Vue({
             console.log("open modal");
             this.currentImageId = imageId;
         },
-        closeModal: function(e) {
+        closeModal: function() {
             console.log("modal is closed:", this.id);
-            this.$emit("close", this.id, e.target.value);
+            // this.$emit("close", this.id, e.target.value);
+            this.currentImageId = false;
         },
-        // closeModal: function(e) {
-        //     this.$emit("close", this.id, e.target.value);
-        //     // this.currentImageId = "";
-        // },
+
         selectFile: function(e) {
             console.log("in method select file");
             this.imgFormInfo.url = e.target.files[0];
@@ -91,11 +94,11 @@ Vue.component("modal-component", {
     data: function() {
         return {
             heading: "modal Component",
-            image: {
-                title: "",
-                description: "",
-                username: ""
-            },
+            // image: {
+            //     title: "",
+            //     description: "",
+            //     username: ""
+            // },
             // commentForm: {
             //     comment: "",
             //     username: ""
@@ -105,18 +108,22 @@ Vue.component("modal-component", {
     },
     mounted: function() {
         console.log("modal is open:", this.id);
-        axios.get("/image/" + this.id).then(function(result) {
+        axios.get("/image/" + this.id).catch(function(err) {
             // getImageById(result.id);
+            console.log(err);
         });
     },
     methods: {
-        // closeModal: function(e) {
+        // close: function() {
         //     console.log("modal is closed:", this.id);
-        //     this.$emit("close", this.id, e.target.value);
         // }
-        // openModal: function() {
-        //     console.log("open modal");
-        // }
+        closeModal: function() {
+            console.log("close modal");
+            console.log(this.id);
+            // console.log(this.currentImageId);
+            // this.$emit("close", this.id, this.currentImageId);
+            this.$emit("close", this.id);
+        }
         // closeModal: function() {}
     },
     template: "#modal-template"
