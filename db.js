@@ -20,6 +20,15 @@ exports.insertImage = function(title, description, username, url) {
     );
 };
 
+exports.uploadComment = function(comment, username, img_id) {
+    return db.query(
+        `
+		INSERT INTO comments (comment, username, img_id)
+		VALUES ($1, $2, $3) RETURNING *
+		`,
+        [comment, username, img_id]
+    );
+};
 exports.getImageById = function(id) {
     return db.query(
         `
@@ -28,13 +37,12 @@ exports.getImageById = function(id) {
         [id]
     );
 };
-exports.uploadComment = function(comment, username, img_id) {
+exports.getImageCommets = function(id) {
     return db.query(
         `
-		INSERT INTO comments (comment, username, img_id)
-		VALUES ($1, $2, $3) RETURNING *
+		SELECT * FROM comments WHERE id=$1
 		`,
-        [comment, username, img_id]
+        [id]
     );
 };
 // // ========================================================

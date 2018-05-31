@@ -65,6 +65,14 @@
 				<!-- submit button -->
 				<input v-on:click="uploadComment" type="submit" value="Submit">
 			</aside>
+			<div class="flexContainer" v-if="comments.length > 0">
+				<div class="comments" v-for="comment in comments" >
+					<!-- <img v-bind:src="image.url" v-on:click="openModal(image.id)"> -->
+					<h3>{{comment.comment}}</h3>
+					<p>{{comment.username}}</p>
+					<p>Created at:  {{comment.created_at}}</p>
+				</div>
+			</div>
 			<!-- <p>{{commentForm.comment}}</p>
 			<p>{{commentForm.username}}</p> -->
 		</div>

@@ -34,7 +34,7 @@ app.use(bodyParser.json());
 app.use(express.static("./public"));
 
 app.get("/images", (req, res) => {
-    console.log("in route /images ");
+    // console.log("in route /images ");
     db
         .getImages()
         .then(result => {
@@ -57,7 +57,7 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
             config.s3Url + req.file.filename
         )
         .then(function(results) {
-            console.log("in route /upload then:");
+            // console.log("in route /upload then:");
             res.json({
                 image: results.rows[0]
             });
@@ -67,24 +67,43 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
         });
 });
 app.get("/image/:id", (req, res) => {
-    db.getImageById(req.params.id).then(function(result) {
-        // console.log("/image/:id ", req);
-        res.json(result.rows[0]);
-    });
+    console.log(req.params.id);
+    db
+        .getImageById(req.params.id)
+        .then(function(result) {
+            // console.log("/image/:id ", req);
+            res.json(result.rows[0]);
+        })
+        .catch(function(err) {
+            console.log("/image/:id /in catch", err);
+        });
 });
 app.post("/image/comment", (req, res) => {
-    console.log("/image/comment", req.body.id);
+    // console.log("/image/comment", req.body.img_id);
+    // console.log("/image/comment", req.body.img_id);
     //
     db
         .uploadComment(req.body.comment, req.body.username, req.body.img_id)
         .then(function(result) {
             // console.log(result);
             res.json({
-                commentForm: result.rows[0]
+                newComment: result.rows[0]
             });
         })
         .catch(function(err) {
             console.log("in catch", err);
+        });
+});
+app.get("/image/comment/:id", (req, res) => {
+    console.log("req.params.id", req.params.id);
+    db
+        .getImageCommets(req.params.id)
+        .then(function(result) {
+            // console.log("/image/:id ", result);
+            res.json(result.rows);
+        })
+        .catch(function(err) {
+            console.log("/image/comment/:id", err);
         });
 });
 // ===============  End of server ==================

@@ -32,21 +32,21 @@ new Vue({
     },
     methods: {
         openModal: function(imageId) {
-            console.log("open modal");
+            // console.log("open modal");
             this.currentImageId = imageId;
         },
         closeModal: function() {
-            console.log("modal is closed:", this.id);
+            // console.log("modal is closed:", this.id);
             // this.$emit("close", this.id, e.target.value);
             this.currentImageId = false;
         },
 
         selectFile: function(e) {
-            console.log("in method select file");
+            // console.log("in method select file");
             this.imgFormInfo.url = e.target.files[0];
         },
         uploadImage: function(e) {
-            console.log("in method upload image");
+            // console.log("in method upload image");
             e.preventDefault();
             // console.log(this.imgFormInfo);
             const fd = new FormData();
@@ -54,12 +54,12 @@ new Vue({
             fd.append("description", this.imgFormInfo.description);
             fd.append("username", this.imgFormInfo.username);
             fd.append("file", this.imgFormInfo.url);
-            console.log("this.imgFormInfo.username", fd);
+            // console.log("this.imgFormInfo.username", fd);
             axios
                 .post("/upload", fd)
                 .then(results => {
                     // const url, username, title, result;
-                    console.log("result of axios ", results, fd);
+                    // console.log("result of axios ", results, fd);
                     // this.images.push(fd);
                     this.images.unshift({
                         id: results.data.image.id,
@@ -69,7 +69,7 @@ new Vue({
                         img: results.data.image.url
                     });
                     // this.images.unshift(results.data.image);
-                    console.log(results.data.images);
+                    // console.log(results.data.images);
                 })
                 .catch(function(err) {
                     console.log("catch route /upload", err);
@@ -109,7 +109,17 @@ Vue.component("modal-component", {
             .get("/image/" + this.id)
             .then(function(result) {
                 self.image = result.data;
+                // mat told me i need to also fech comments anfd
+                // populate self.comments whit the fechet comments
                 // console.log("result");
+                axios
+                    .get("/image/comment/" + self.id)
+                    .then(function(result) {
+                        self.comments = result.data;
+                    })
+                    .catch(function(err) {
+                        console.log(err);
+                    });
             })
             .catch(function(err) {
                 // getImageById(result.id);
@@ -128,20 +138,33 @@ Vue.component("modal-component", {
             this.$emit("close", this.id);
         },
         uploadComment: function() {
-            // let self = this;
+            let self = this;
+            console.log(
+                "upload comment",
+                self.commentForm.comment,
+                self.commentForm.username,
+                self.id
+            );
             axios
                 .post("/image/comment/", {
-                    comment: this.commentForm.comment,
-                    username: this.commentForm.username,
-                    img_id: this.id
+                    comment: self.commentForm.comment,
+                    username: self.commentForm.username,
+                    img_id: self.id
+                    // img_id: self.id
                 })
                 .then(function(result) {
-                    result.json({
-                        commentForm: result.rows[0]
+                    console.log("upComm axios then", result);
+                    self.comments.unshift({
+                        id: result.data.newComment.id,
+                        username: result.data.newComment.username,
+                        img_id: result.data.newComment.img_id,
+                        created_at: result.data.newComment.created_at
                     });
+                    // console.log(this.comments);
+                    // result.data.newComment;
                 })
                 .catch(function(err) {
-                    console.log(err);
+                    console.log("upload comment: ", err);
                 });
         }
         // closeModal: function() {}
