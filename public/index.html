@@ -57,13 +57,16 @@
 			<p>{{image.username}}</p>
 			<p>{{image.created_at}}</p>
 			<button v-on:click="closeModal">X</button>
-
+			<!-- {{error}} -->
 			<!-- comments input -->
 			<aside class="comments">
 				<input v-model="commentForm.comment" type="text" name="comment" placeholder="comment">
 				<input v-model="commentForm.username" type="text" name="username" placeholder="username">
 				<!-- submit button -->
 				<input v-on:click="uploadComment" type="submit" value="Submit">
+				<!-- <div v-if="error">
+					{{error}}
+				</div> -->
 			</aside>
 			<div class="flexContainer" v-if="comments.length > 0">
 				<div class="comments" v-for="comment in comments" >

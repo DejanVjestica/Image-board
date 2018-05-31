@@ -2,8 +2,13 @@ const spicedPg = require("spiced-pg");
 const dbUrl = "postgres:dvjes:postgres@localhost:5432/imageboard";
 const db = spicedPg(dbUrl);
 
+// exports.getImages = function() {
+//     return db.query(
+//         `SELECT * FROM images ORDER BY id DESC LIMIT 3 WHERE id < $1`
+//     );
+// };
 exports.getImages = function() {
-    return db.query(`SELECT * FROM images ORDER BY id DESC`);
+    return db.query(`SELECT * FROM images ORDER BY id DESC LIMIT 6`);
 };
 // exports.insertImage = function(url, username, title, description) {
 //     return db.query(
@@ -15,7 +20,7 @@ exports.getImages = function() {
 exports.insertImage = function(title, description, username, url) {
     return db.query(
         `INSERT INTO images (title, description, username, url)
-    VALUES ($1, $2, $3, $4) RETURNING id, title, description, username, url`,
+    VALUES ($1, $2, $3, $4) RETURNING *`,
         [title || null, description || null, username || null, url || null]
     );
 };
@@ -37,10 +42,18 @@ exports.getImageById = function(id) {
         [id]
     );
 };
+// exports.getImageById = function(id) {
+//     return db.query(
+//         `
+// 		SELECT * FROM images WHERE id=$1
+// 		`,
+//         [id]
+//     );
+// };
 exports.getImageCommets = function(id) {
     return db.query(
         `
-		SELECT * FROM comments WHERE id=$1
+		SELECT * FROM comments WHERE img_id=$1
 		`,
         [id]
     );

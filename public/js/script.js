@@ -15,12 +15,13 @@ new Vue({
             url: null
         },
         images: [],
-        currentImageId: "",
+        currentImageId: location.hash.slice(1),
         image: {
             title: "",
             description: "",
             username: ""
         }
+        // error: ""
     },
     mounted: function() {
         // console.log(images);
@@ -30,6 +31,12 @@ new Vue({
             // console.log("inside script.js: ", me.images);
         });
     },
+    created: function() {
+        addEventListener("hashchange", function() {
+            self.currentImageId = location.hach.slice(1);
+        });
+    },
+
     methods: {
         openModal: function(imageId) {
             // console.log("open modal");
@@ -38,7 +45,7 @@ new Vue({
         closeModal: function() {
             // console.log("modal is closed:", this.id);
             // this.$emit("close", this.id, e.target.value);
-            this.currentImageId = false;
+            this.currentImageId = "";
         },
 
         selectFile: function(e) {
@@ -58,6 +65,7 @@ new Vue({
             axios
                 .post("/upload", fd)
                 .then(results => {
+                    console.log(results.data.image.url);
                     // const url, username, title, result;
                     // console.log("result of axios ", results, fd);
                     // this.images.push(fd);
@@ -66,7 +74,7 @@ new Vue({
                         title: this.imgFormInfo.title,
                         description: this.imgFormInfo.description,
                         username: this.imgFormInfo.username,
-                        img: results.data.image.url
+                        url: results.data.image.url
                     });
                     // this.images.unshift(results.data.image);
                     // console.log(results.data.images);
@@ -125,6 +133,11 @@ Vue.component("modal-component", {
                 // getImageById(result.id);
                 console.log(err);
             });
+    },
+    watch: {
+        id: function() {
+            axios.get("/image/" + this.id);
+        }
     },
     methods: {
         // close: function() {
