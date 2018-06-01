@@ -106,6 +106,23 @@ app.get("/image/comment/:id", (req, res) => {
             console.log("/image/comment/:id", err);
         });
 });
+// -------------------------------------
+app.get("/more/:curAmountOfImgs", (req, res) => {
+    console.log("button is clicked");
+    //
+    const curAmountOfImgs = req.params.curAmountOfImgs;
+    console.log(curAmountOfImgs);
+    db
+        .loadMoreImages(curAmountOfImgs)
+        .then(function(result) {
+            console.log(result.rows);
+            //
+            res.json(result.rows);
+        })
+        .catch(function(err) {
+            console.log(err);
+        });
+});
 // ===============  End of server ==================
 app.listen(8080, () => console.log("Listening"));
 // =================================================

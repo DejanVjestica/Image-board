@@ -1,96 +1,5 @@
-// ------------------------
-// main vue instance ------
-// ------------------------
-new Vue({
-    el: "#main",
-    data: {
-        // upload image
-        // result box
-        title: "Image board",
-        heading: "Latest Images",
-        imgFormInfo: {
-            title: "",
-            description: "",
-            username: "",
-            url: null
-        },
-        images: [],
-        currentImageId: location.hash.slice(1),
-        image: {
-            title: "",
-            description: "",
-            username: ""
-        }
-        // error: ""
-    },
-    mounted: function() {
-        // console.log(images);
-        let me = this;
-        axios.get("/images").then(function(resp) {
-            me.images = resp.data.images;
-            // console.log("inside script.js: ", me.images);
-        });
-    },
-    created: function() {
-        addEventListener("hashchange", function() {
-            self.currentImageId = location.hach.slice(1);
-        });
-    },
-
-    methods: {
-        openModal: function(imageId) {
-            // console.log("open modal");
-            this.currentImageId = imageId;
-        },
-        closeModal: function() {
-            // console.log("modal is closed:", this.id);
-            // this.$emit("close", this.id, e.target.value);
-            this.currentImageId = "";
-        },
-
-        selectFile: function(e) {
-            // console.log("in method select file");
-            this.imgFormInfo.url = e.target.files[0];
-        },
-        uploadImage: function(e) {
-            // console.log("in method upload image");
-            e.preventDefault();
-            // console.log(this.imgFormInfo);
-            const fd = new FormData();
-            fd.append("title", this.imgFormInfo.title);
-            fd.append("description", this.imgFormInfo.description);
-            fd.append("username", this.imgFormInfo.username);
-            fd.append("file", this.imgFormInfo.url);
-            // console.log("this.imgFormInfo.username", fd);
-            axios
-                .post("/upload", fd)
-                .then(results => {
-                    console.log(results.data.image.url);
-                    // const url, username, title, result;
-                    // console.log("result of axios ", results, fd);
-                    // this.images.push(fd);
-                    this.images.unshift({
-                        id: results.data.image.id,
-                        title: this.imgFormInfo.title,
-                        description: this.imgFormInfo.description,
-                        username: this.imgFormInfo.username,
-                        url: results.data.image.url
-                    });
-                    // this.images.unshift(results.data.image);
-                    // console.log(results.data.images);
-                })
-                .catch(function(err) {
-                    console.log("catch route /upload", err);
-                });
-        }
-    }
-});
-// ----------------------------
-// component image modal ------
-// ----------------------------
-
 Vue.component("modal-component", {
-    props: ["id", "currentImageId"],
+    props: ["id"],
     data: function() {
         return {
             heading: "modal Component",
@@ -111,7 +20,7 @@ Vue.component("modal-component", {
         };
     },
     mounted: function() {
-        let self = this;
+        var self = this;
         // console.log("modal is open:", this.id);
         axios
             .get("/image/" + this.id)
@@ -136,7 +45,17 @@ Vue.component("modal-component", {
     },
     watch: {
         id: function() {
-            axios.get("/image/" + this.id);
+            var self = this;
+            console.log("id changed");
+            axios
+                .get("/image/" + this.id)
+                .then(function(result) {
+                    console.log(result.data.id);
+                    self.image = result.data;
+                })
+                .catch(function(err) {
+                    console.log(err);
+                });
         }
     },
     methods: {
@@ -183,4 +102,132 @@ Vue.component("modal-component", {
         // closeModal: function() {}
     },
     template: "#modal-template"
+});
+// ------------------------
+// main vue instance ------
+// ------------------------
+const app = new Vue({
+    el: "#main",
+    data: {
+        // upload image
+        // result box
+        title: "Image board",
+        heading: "Latest Images",
+        imgFormInfo: {
+            title: "",
+            description: "",
+            username: "",
+            url: null
+        },
+        images: [],
+        currentImageId: location.hash.slice(1),
+        curAmountOfImgs: "",
+        image: {
+            title: "",
+            description: "",
+            username: ""
+        }
+        // error: ""
+    },
+    mounted: function() {
+        // console.log(images);
+        let me = this;
+        axios.get("/images").then(function(resp) {
+            // console.log("mounted vue", this.currentImageId);
+            me.images = resp.data.images;
+            // var length = me.images.length - 1;
+            // me.lastImageId = app.images[5].id;
+            // console.log(me.lastImageId);
+            // console.log("inside script.js: ", me.images);
+        });
+    },
+    // created: function() {
+    //     addEventListener("hashchange", function() {
+    //         console.log("mounted vue", this.currentImageId);
+    //         self.currentImageId = location.hash.slice(1);
+    //     });
+    // },
+
+    methods: {
+        // showImage: function(imageId) {
+        //     this.currentImageId = imageId;
+        //     // var img = this.images.find(img => img.id == id);
+        // },
+        // ________________________________-
+        loadMoreImages: function() {
+            let me = this;
+            // let imageLength = me.images.length;
+            axios
+                .get(`/more/${me.images.length}`)
+                .then(function(resp) {
+                    console.log("inside axios then: ", resp.data[0]);
+                    console.log(" image array", me.images[0]);
+                    // var newImages = resp.data;
+                    // me.images.push(newImages);
+                    me.images = [...me.images, ...resp.data];
+                    // console.log(me.images);
+                    // console.log(resp.data[5].id);
+                    // console.log("mounted vue", this.currentImageId);
+                    // me.images = resp.data.images;
+                    // console.log(app.images[5].id);
+                    // console.log("inside script.js: ", me.images);
+                })
+                .catch(function(err) {
+                    console.log(err);
+                });
+        },
+        openModal: function(imageId) {
+            // console.log("open modal");
+            this.currentImageId = imageId;
+        },
+        closeModal: function() {
+            // console.log("modal is closed:", this.id);
+            // this.$emit("close", this.id, e.target.value);
+            location.hash = "#";
+            this.currentImageId = "";
+        },
+
+        selectFile: function(e) {
+            // console.log("in method select file");
+            this.imgFormInfo.url = e.target.files[0];
+        },
+        uploadImage: function(e) {
+            // console.log("in method upload image");
+            e.preventDefault();
+            // console.log(this.imgFormInfo);
+            const fd = new FormData();
+            fd.append("title", this.imgFormInfo.title);
+            fd.append("description", this.imgFormInfo.description);
+            fd.append("username", this.imgFormInfo.username);
+            fd.append("file", this.imgFormInfo.url);
+            // console.log("this.imgFormInfo.username", fd);
+            axios
+                .post("/upload", fd)
+                .then(results => {
+                    console.log(results.data.image.url);
+                    // const url, username, title, result;
+                    // console.log("result of axios ", results, fd);
+                    // this.images.push(fd);
+                    this.images.unshift({
+                        id: results.data.image.id,
+                        title: this.imgFormInfo.title,
+                        description: this.imgFormInfo.description,
+                        username: this.imgFormInfo.username,
+                        url: results.data.image.url
+                    });
+                    // this.images.unshift(results.data.image);
+                    // console.log(results.data.images);
+                })
+                .catch(function(err) {
+                    console.log("catch route /upload", err);
+                });
+        }
+    }
+});
+// ---------------------------
+// ---- custom function ------
+// ---------------------------
+addEventListener("hashchange", () => {
+    const imageId = location.hash.slice(1);
+    app.openModal(imageId);
 });

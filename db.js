@@ -7,6 +7,14 @@ const db = spicedPg(dbUrl);
 //         `SELECT * FROM images ORDER BY id DESC LIMIT 3 WHERE id < $1`
 //     );
 // };
+exports.loadMoreImages = function(curAmountOfImgs) {
+    return db.query(
+        `
+			SELECT * FROM images ORDER BY id DESC LIMIT 6 OFFSET $1;
+		`,
+        [curAmountOfImgs]
+    );
+};
 exports.getImages = function() {
     return db.query(`SELECT * FROM images ORDER BY id DESC LIMIT 6`);
 };

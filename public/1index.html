@@ -7,38 +7,32 @@
 <body>
 	<!-- Vue app -->
 	<div id="main" class="flex-grid">
-		<header class="col col-100 grey wrapper flex-grid">
-			<h1 class="col col-100">{{title}}</h1>
-			<!-- <h2>{{heading}}</h2> -->
-			<section class="uploadFIle col flex2 flex-grid">
-				<!-- title -->
-				<label class="col col-100">Upload image </label>
-				<!-- <span class="required">*</span> -->
-				<!-- <label for="title">Upload an image</label> -->
-				<input class="col" v-model="imgFormInfo.title" type="text" name="title" placeholder="title">
-				<!-- description -->
-				<input class="col" v-model="imgFormInfo.description" type="text" name="description" placeholder="description">
-				<!-- username -->
-				<input class="col" v-model="imgFormInfo.username" type="text" name="username" placeholder="username">
-				<!-- upload file -->
-				<input class="col" v-on:change="selectFile" type="file" name="file">
-				<!-- submit button -->
-				<input class="col" v-on:click="uploadImage" type="submit" value="Submit">
-			</section>
+		<header class="col">
+			<h1>{{title}}</h1>
+			<h2>{{heading}}</h2>
 		</header>
 		<!-- header -->
 		<!-- Upload file form -->
+		<section class="uploadFIle class="col"">
+			<!-- title -->
+			<input v-model="imgFormInfo.title" type="text" name="title" placeholder="title">
+			<!-- description -->
+			<input v-model="imgFormInfo.description" type="text" name="description" placeholder="description">
+			<!-- username -->
+			<input v-model="imgFormInfo.username" type="text" name="username" placeholder="username">
+			<!-- upload file -->
+			<input v-on:change="selectFile" type="file" name="file">
+			<!-- submit button -->
+			<input v-on:click="uploadImage" type="submit" value="Submit">
+		</section>
 		<!-- display images -->
-		<div class="flex-grid col wrapper" v-if="images.length > 0">
-			<div class="image col col-30 border wrapper" v-for="image in images" >
+		<div class=" col" v-if="images.length > 0">
+			<div class="image" v-for="image in images" >
 				<a v-bind:href="'#' + image.id"><img v-bind:src="image.url"></a>
-				<div class="imageInfo">
-					<h3>{{image.title}}</h3>
-					<p>{{image.description}}</p>
-					<p>Uploaded by {{image.username}}</p>
-				</div>
+				<h3>{{image.title}}</h3>
+				<p>{{image.description}}</p>
+				<p>Uploaded by {{image.username}}</p>
 			</div>
-			<input v-on:click="loadMoreImages" type="submit" name="more" value="more">
 		</div>
 		<!-- imagemodal -->
 		<modal-component
@@ -58,6 +52,7 @@
 	</script> -->
 	<script id="modal-template" type="text/x-template">
 		<div class="modal">
+
 		    <!-- <h1>{{ heading }}</h1> -->
 			<img v-bind:src="image.url" >
 			<p>{{image.title}}</p>
