@@ -9,6 +9,9 @@ img {
     object-fit: cover;
     background-color: black;
 }
+h1 {
+    font-size: 1.5em;
+}
 h1,
 p {
     margin: 0 0 0.5em;
@@ -71,6 +74,10 @@ input[type="file"] {
 /* main vue app magges */
 .image {
     border: solid 1px black;
+    height: auto;
+}
+.imageInfo {
+    /* overflow: scroll; */
 }
 /* ---------------------------- */
 /* flexgrid  */
@@ -123,7 +130,7 @@ input[type="file"] {
 }
 .modal img {
     width: 100%;
-    height: auto;
+    height: 50%;
 }
 .comments {
     color: black;
@@ -155,11 +162,70 @@ input[type="file"] {
 }
 @media (min-width: 801px) {
     /* tablet, landscape iPad, lo-res laptops ands desktops */
+    .bFlex50 {
+        flex: 1 40%;
+    }
+    .image {
+        /* width: 300px; */
+    }
+    .image:nth-child(2n + 1) {
+        margin-right: 2.5%;
+    }
+    .image:last-child {
+        /* flex-basis: 30%; */
+    }
 }
 @media (min-width: 1025px) {
     /* big landscape tablets, laptops, and desktops */
     .bFlex50 {
-        flex: 1 40%;
+        flex: 1 25%;
+    }
+    .image {
+        /* width: 300px; */
+    }
+    .image:nth-child(2n + 1) {
+        margin-right: 0;
+    }
+    .image:nth-child(1n + 1) {
+        margin-right: 2.5%;
+    }
+    .image:nth-child(3n + 3) {
+        /* margin-left: 2.5%; */
+    }
+    .image:last-child {
+    }
+    /* ------------------------- */
+    /* modal */
+    .modal {
+    }
+    .imageModal {
+        display: flex;
+    }
+    .modal img {
+        width: 60%;
+        height: 50%;
+    }
+    .comments {
+        color: black;
+        display: flex;
+        flex-direction: column;
+        /* overflow: scroll; */
+    }
+    .commentsContaier {
+        background-color: white;
+        padding: 2.5%;
+        align-self: flex-end;
+        /* flex-grow: 1; */
+    }
+    .commentsForm {
+        display: flex;
+        max-width: 40%;
+        flex-direction: column;
+    }
+    .commentForm input {
+    }
+    .commentsSingle {
+        border-bottom: solid 1px black;
     }
 }
 @media (min-width: 1281px) {

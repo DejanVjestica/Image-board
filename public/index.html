@@ -24,17 +24,17 @@
 				<label class="flex100 marginBottom">Upload image </label>
 				<!-- <span class="required">*</span> -->
 				<!-- <label for="title">Upload an image</label> -->
-				<input class="flex100 marginBottom "
+				<input class="flex100 bFlex50 marginBottom mMarginRight"
 					v-model="imgFormInfo.title"
 					type="text" name="title"
 					placeholder="title">
 				<!-- description -->
-				<input class="flex100 marginBottom "
+				<input class="flex100 bFlex50 marginBottom mMarginLeft"
 					v-model="imgFormInfo.description"
 					type="text" name="description"
 					placeholder="description">
 				<!-- username -->
-				<input class="flex100  marginBottom "
+				<input class="flex100 bFlex50 marginBottom "
 					v-model="imgFormInfo.username"
 					type="text" name="username"
 					placeholder="username">
@@ -49,8 +49,8 @@
 			</section>
 		<!------------------------------------------------>
 		<!-- display images -->
-		<div class="flexDisplay flexColumn  wrapper" v-if="images.length > 0">
-			<div class="image marginBottom wrapper" v-for="image in images" >
+		<div class="mainImageDisplay flexDisplay flexWrap wrapper justifySpaceBeetwen" v-if="images.length > 0">
+			<div class="bFlex50 image marginBottom wrapper" v-for="image in images" >
 				<a v-bind:href="'#' + image.id"><img v-bind:src="image.url"></a>
 				<div class="imageInfo">
 					<h3>{{image.title}}</h3>
@@ -58,9 +58,9 @@
 					<p>Uploaded by: {{image.username}}</p>
 				</div>
 			</div>
-			<input class="flex100"
-				v-on:click="loadMoreImages" type="submit" name="more" value="more">
 		</div>
+		<input class="flex100"
+		v-on:click="loadMoreImages" type="submit" name="more" value="more">
 		<!------------------------------------------------>
 		<!-- imagemodal -->
 		<modal-component
@@ -71,16 +71,16 @@
 	</div>
 	<!-- ------------------------------>
 	<!-- vue components -->
-	</script> -->
+	</script>
 	<script id="modal-template" type="text/x-template">
 
 		<article class="modal flexDisplay grey flexColumn">
 			<!-- <header>
 
 			</header> -->
-			<main class=" ">
+			<main class="imageModal">
 				<img class="" v-bind:src="image.url" >
-				<div class="flexDisplay flexColumn">
+				<div class="wrapper flexDisplay flexColumn">
 					<h3>Title: {{image.title}}</h3>
 					<p>Uploade by: {{image.username}}</p>
 					<p>Createt at: {{image.created_at}}</p>
@@ -92,7 +92,7 @@
 			<!-- comments input -->
 			<aside class="comments ">
 				<!-- existing comments display -->
-				<div class="commentsContaier flexContainer marginBottom" v-if="comments.length > 0">
+				<div class="commentsContaier flexContainer  marginBottom" v-if="comments.length > 0">
 					<h1>Comments</h1>
 					<div class="commentsSingle" v-for="comment in comments" >
 						<h3>{{comment.comment}}</h3>
@@ -101,7 +101,7 @@
 					</div>
 				</div>
 				<!-- new comment form -->
-				<div class="commentsForm flexDisplay flexWrap">
+				<div class="commentsForm flexDisplay flexColumn">
 					<input v-model="commentForm.comment" type="textarea"
 						class="flex50  marginBottom mMarginRight" name="comment" placeholder="comment">
 					<input v-model="commentForm.username" type="text"
