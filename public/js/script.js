@@ -1,3 +1,4 @@
+// Vue component single images popup
 Vue.component("modal-component", {
     props: ["id"],
     data: function() {
@@ -126,7 +127,8 @@ const app = new Vue({
             title: "",
             description: "",
             username: ""
-        }
+        },
+        showForm: false
         // error: ""
     },
     mounted: function() {
@@ -149,10 +151,11 @@ const app = new Vue({
     // },
 
     methods: {
-        // showImage: function(imageId) {
-        //     this.currentImageId = imageId;
-        //     // var img = this.images.find(img => img.id == id);
-        // },
+        showUploadForm: function() {
+            app.showForm = true;
+            // this.currentImageId = imageId;
+            // var img = this.images.find(img => img.id == id);
+        },
         // ________________________________-
         loadMoreImages: function() {
             let me = this;

@@ -5,32 +5,50 @@
 	<link rel="stylesheet" href="/styles.css">
 </head>
 <body>
+	<!------------------------------------------------>
 	<!-- Vue app -->
-	<div id="main" class="flex-grid">
-		<header class="col col-100 grey wrapper flex-grid">
-			<h1 class="col col-100">{{title}}</h1>
-			<!-- <h2>{{heading}}</h2> -->
-			<section class="uploadFIle col flex2 flex-grid">
+	<div id="main" class="flexDisplay flexColumn">
+		<!-- header includes logo and upload form -->
+		<header class="grey wrapper flexDisplay">
+			<h1 class="flex100">{{title}}</h1>
+			<!-- upload form -->
+			<button class="flex30" v-on:click="showUploadForm" type="submit" name="button">Upload Image</button>
+			<!-- <input class="col" v-on:click="showUploadForm"  type="submit" value="Upload Image"> -->
+		</header>
+		<section
+			class="uploadForm grey wrapper flexDisplay flexWrap justifySpaceBeetwen"
+			v-if="showForm">
 				<!-- title -->
-				<label class="col col-100">Upload image </label>
+				<label class="flex100 marginBottom">Upload image </label>
 				<!-- <span class="required">*</span> -->
 				<!-- <label for="title">Upload an image</label> -->
-				<input class="col" v-model="imgFormInfo.title" type="text" name="title" placeholder="title">
+				<input class="flex50 marginBottom marginRight"
+					v-model="imgFormInfo.title"
+					type="text" name="title"
+					placeholder="title">
 				<!-- description -->
-				<input class="col" v-model="imgFormInfo.description" type="text" name="description" placeholder="description">
+				<input class="flex50 marginBottom marginLeft"
+					v-model="imgFormInfo.description"
+					type="text" name="description"
+					placeholder="description">
 				<!-- username -->
-				<input class="col" v-model="imgFormInfo.username" type="text" name="username" placeholder="username">
+				<input class="flex50  marginBottom marginRight"
+					v-model="imgFormInfo.username"
+					type="text" name="username"
+					placeholder="username">
 				<!-- upload file -->
-				<input class="col" v-on:change="selectFile" type="file" name="file">
+				<input class="flex50 marginLeft"
+					v-on:change="selectFile"
+					type="file" name="file">
 				<!-- submit button -->
-				<input class="col" v-on:click="uploadImage" type="submit" value="Submit">
+				<input class="flex100"
+					v-on:click="uploadImage"
+					type="submit" value="Submit">
 			</section>
-		</header>
-		<!-- header -->
-		<!-- Upload file form -->
+		<!------------------------------------------------>
 		<!-- display images -->
-		<div class="flex-grid col wrapper" v-if="images.length > 0">
-			<div class="image col col-30 border wrapper" v-for="image in images" >
+		<div class="flexDisplay flexColumn  wrapper" v-if="images.length > 0">
+			<div class="image marginBottom wrapper" v-for="image in images" >
 				<a v-bind:href="'#' + image.id"><img v-bind:src="image.url"></a>
 				<div class="imageInfo">
 					<h3>{{image.title}}</h3>
@@ -38,27 +56,22 @@
 					<p>Uploaded by {{image.username}}</p>
 				</div>
 			</div>
-			<input v-on:click="loadMoreImages" type="submit" name="more" value="more">
+			<input class="flex100"
+				v-on:click="loadMoreImages" type="submit" name="more" value="more">
 		</div>
+		<!------------------------------------------------>
 		<!-- imagemodal -->
 		<modal-component
 			v-if="currentImageId"
 			v-bind:id="currentImageId"
 			v-on:close="closeModal"
 		></modal-component>
-		<!-- <modal-component></modal-component> -->
-		<!-- <imagemodal-component></imagemodal-component> -->
 	</div>
+	<!-- ------------------------------>
 	<!-- vue components -->
-	<!-- <script class="imagemodal-template" type="text/x-template">
-		<div>
-		    <h1>{{ heading }}</h1>
-		    <p>This is a component!!!</p>
-		</div>
 	</script> -->
 	<script id="modal-template" type="text/x-template">
 		<div class="modal">
-		    <!-- <h1>{{ heading }}</h1> -->
 			<img v-bind:src="image.url" >
 			<p>{{image.title}}</p>
 			<p>{{image.username}}</p>
@@ -75,16 +88,14 @@
 					{{error}}
 				</div> -->
 			</aside>
+			<!-- comments -->
 			<div class="flexContainer" v-if="comments.length > 0">
 				<div class="comments" v-for="comment in comments" >
-					<!-- <img v-bind:src="image.url" v-on:click="openModal(image.id)"> -->
-					<h3>{{comment.comment}}</h3>
+xs					<h3>{{comment.comment}}</h3>
 					<p>{{comment.username}}</p>
 					<p>Created at:  {{comment.created_at}}</p>
 				</div>
 			</div>
-			<!-- <p>{{commentForm.comment}}</p>
-			<p>{{commentForm.username}}</p> -->
 		</div>
 	</script>
 	<!-- js scripts -->

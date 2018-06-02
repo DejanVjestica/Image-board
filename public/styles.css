@@ -1,80 +1,100 @@
+/* general styles  */
 body {
     font-family: sans-serif;
     margin: 0;
 }
-.green {
-    background-color: green;
-}
-.red {
-    background-color: red;
-    color: white;
-}
-.grey {
-    background-color: black;
-    color: white;
-}
-.border {
-    border: solid 1px black;
-}
-.wrapper {
-    padding: 1em;
-}
 img {
-    width: 100%;
-    height: auto;
+    width: 300px;
+    height: 200px;
+    background-color: black;
 }
 h1 {
     margin: 0;
 }
+/* colors */
+.grey {
+    background-color: black;
+    color: white;
+}
+/* margins */
+.marginLeft {
+    margin-left: 2.5%;
+}
+.marginRight {
+    margin-right: 2.5%;
+}
+.marginBottom {
+    margin-bottom: 2.5%;
+}
+.marginTop {
+    margin-top: 2.5%;
+}
+/* content wrapper */
+.wrapper {
+    padding: 2.5%;
+}
+/* ---------------------------------------------- */
 /* form styles */
 label {
-    margin: 1em 0;
+    /* margin: 1em 0; */
 }
 input[type="text"] {
     background-color: white;
-    /* background-image: url("searchicon.png"); */
-    /* background-position: 10px 10px; */
-    /* background-repeat: no-repeat;
-    padding-left: 40px; */
     border: none;
     padding: 1em;
-    margin: 0 1em 1em 0;
+    /* margin: 0 1em 1em 0; */
 }
 input[type="submit"],
-input[type="button"] {
-    background-color: white;
+input[type="button"],
+button {
+    /* background-color: white; */
     background-color: red;
     color: white;
-    /* background-image: url("searchicon.png"); */
-    /* background-position: 10px 10px; */
-    /* background-repeat: no-repeat;
-    padding-left: 40px; */
     border: none;
     padding: 1em;
 }
 input[type="file"] {
-    margin-bottom: 1em;
+    padding: 1em;
+    /* margin-bottom: 1em; */
+}
+/* Upload form  */
+.uploadForm {
     /* display: none; */
 }
+/* main vue app magges */
 .image {
-    margin: 0 1em 1em 0;
+    border: solid 1px black;
 }
+/* ---------------------------- */
 /* flexgrid  */
-.flex-grid {
+/* ---------------------------- */
+/* Parent elements */
+.flexDisplay {
     display: flex;
-    flex-flow: column;
-    /* width: 100%; */
 }
-.col {
-    flex: 1;
-    /* background-color: grey; */
-    /* height: 200px; */
-    /* margin-bottom: 1em;
-    margin-right: 1em; */
+.flexColumn {
+    flex-flow: column;
+}
+.flexWrap {
+    flex-wrap: wrap;
+}
+.justifySpaceBeetwen {
+    justify-content: space-between;
+}
+/* children */
+.flex30 {
+    flex: 1 30%;
+}
+.flex50 {
+    flex: 1 40%;
+}
+.flex100 {
+    flex: 1 100%;
 }
 .col:last-child {
-    width: 30%;
+    /* width: 30%; */
 }
+/* ------------------------ */
 /* modal */
 .modal {
     position: fixed;
@@ -89,41 +109,4 @@ input[type="file"] {
 .modal img {
     width: 400px;
     height: auto;
-}
-/* ------------------------- */
-@media (min-width: 320px) {
-    /* smartphones, portrait iPhone, portrait 480x320 phones (Android) */
-}
-@media (min-width: 480px) {
-    /* smartphones, Android phones, landscape iPhone */
-}
-@media (min-width: 600px) {
-    /* portrait tablets, portrait iPad, e-readers (Nook/Kindle), landscape 800x480 phones (Android) */
-    .flex-grid {
-        display: flex;
-        flex-flow: row;
-        flex-wrap: wrap;
-        /* justify-content: space-between; */
-    }
-    .col-100 {
-        flex: 1 100%;
-    }
-    /* .flex2 {
-        flex: 2;
-    } */
-    header {
-        /* height: 100px; */
-    }
-}
-@media (min-width: 801px) {
-    /* tablet, landscape iPad, lo-res laptops ands desktops */
-}
-@media (min-width: 1025px) {
-    .col-30 {
-        flex: 1 29%;
-    }
-    /* big landscape tablets, laptops, and desktops */
-}
-@media (min-width: 1281px) {
-    /* hi-res laptops and desktops */
 }
