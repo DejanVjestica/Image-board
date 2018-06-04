@@ -71,7 +71,7 @@
 	</div>
 	<!-- ------------------------------>
 	<!-- vue components -->
-	</script>
+	<!-- </script> -->
 	<script id="modal-template" type="text/x-template">
 
 		<article class="modal flexDisplay grey flexColumn">
@@ -80,17 +80,17 @@
 			</header> -->
 			<main class="imageModal">
 				<img class="" v-bind:src="image.url" >
+			</main>
+			<button class="cancel" v-on:click="closeModal">X</button>
+			<!-- {{error}} -->
+			<!-- comments input -->
+			<aside class="comments ">
 				<div class="wrapper flexDisplay flexColumn">
 					<h3>Title: {{image.title}}</h3>
 					<p>Uploade by: {{image.username}}</p>
 					<p>Createt at: {{image.created_at}}</p>
 
 				</div>
-				<button class="cancel" v-on:click="closeModal">X</button>
-			</main>
-			<!-- {{error}} -->
-			<!-- comments input -->
-			<aside class="comments ">
 				<!-- existing comments display -->
 				<div class="commentsContaier flexContainer  marginBottom" v-if="comments.length > 0">
 					<h1>Comments</h1>
