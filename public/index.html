@@ -1,69 +1,99 @@
 <!doctype html>
 <html>
 <head>
-    <title>Image Board</title>
-	<link rel="stylesheet" href="/styles.css">
+	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Image Board</title>
+	<!-- w3.css framework -->
+	<link rel="stylesheet" type="text/css" href="https://www.w3schools.com/w3css/4/w3.css">
+	<!-- <link rel="stylesheet" href="/w3.css"> -->
+	<!-- <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato"> -->
+	<!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+	<link rel="stylesheet" type="text/css" href="/w3.css">
+	<link rel="stylesheet" type="text/css" href="/styles.css">
 
 </head>
 <body>
 	<!------------------------------------------------>
 	<!-- Vue app -->
-	<div id="main" className="">
-		<!-- header includes logo and upload form -->
-		<header className="">
-			<h1 className="">{{title}}</h1>
-			<!-- upload form -->
-			<button className="" v-on:click="showUploadForm" type="submit" name="button">Upload Image</button>
-			<!-- <input className="col" v-on:click="showUploadForm"  type="submit" value="Upload Image"> -->
-		</header>
+	<div id="main" class="">
+		<!-- header -->
+		<div class="w3-top">
+			<div class="w3-bar w3-black w3-card">
+				<div class="w3-bar-item w3-padding-large w3-left">{{title}}</div>
+				<div
+					class="w3-bar-item w3-button w3-padding-large w3-right"
+					v-on:click="showUploadForm"
+					type="submit"
+					name="button"
+					>Upload Image</div>
+			</div>
+		</div>
+
 		<section
-			className=""
-			v-if="showForm">
-				<!-- title -->
-				<label className="">Upload image </label>
-				<!-- <span className="required">*</span> -->
-				<!-- <label for="title">Upload an image</label> -->
-				<input className=""
-					v-model="imgFormInfo.title"
-					type="text" name="title"
-					placeholder="title">
-				<!-- description -->
-				<input className=""
-					v-model="imgFormInfo.description"
-					type="text" name="description"
-					placeholder="description">
-				<!-- username -->
-				<input className=""
-					v-model="imgFormInfo.username"
-					type="text" name="username"
-					placeholder="username">
-				<!-- upload file -->
-				<input className=""
-					v-on:change="selectFile"
-					type="file" name="file">
-				<!-- submit button -->
-				<input className=""
-					v-on:click="uploadImage"
-					type="submit" value="Submit">
+			id="uploadForm"
+			class="w3-modal"
+			v-if="showForm"
+			v-bind:class="{showModal: showForm}">
+			<div class="w3-modal-content w3-padding w3-card-4 w3-animate-zoom">
+				<div class="w3-container">
+					<div class="w3-section">
+						<div class="">
+							<span
+							class="w3-button w3-xlarge w3-transparent w3-display-topright"
+							v-on:click="showUploadForm"
+							>×</span>
+
+						</div>
+						<input class="w3-input w3-border w3-margin-bottom w3-margin-top"
+						v-model="imgFormInfo.title"
+						type="text" name="title"
+						placeholder="title">
+						<!-- description -->
+						<input class="w3-input w3-border w3-margin-bottom"
+						v-model="imgFormInfo.description"
+						type="text" name="description"
+						placeholder="description">
+						<!-- username -->
+						<input class="w3-input w3-border w3-margin-bottom"
+						v-model="imgFormInfo.username"
+						type="text" name="username"
+						placeholder="username">
+						<!-- upload file -->
+						<input class="w3-input w3-border w3-margin-bottom"
+						v-on:change="selectFile"
+						type="file" name="file">
+						<!-- submit button -->
+						<input class="w3-button w3-block w3-green w3-section w3-padding"
+						v-on:click="uploadImage"
+						type="submit" value="Submit">
+					</div>
+				</div>
+			</div>
 			</section>
 		<!------------------------------------------------>
 		<!-- display images -->
-		<div className="" v-if="images.length > 0">
-			<div className="" v-for="image in images" >
-				<a v-bind:href="'#' + image.id"><img v-bind:src="image.url"></a>
-				<div className="">
-					<h3>{{image.title}}</h3>
-					<p>{{image.description}}</p>
-					<p>Uploaded by: {{image.username}}</p>
+		<div class="w3-row-padding" v-if="images.length > 0" style="margin-top:92px">
+			<div class="w3-third w3-margin-bottom" v-for="image in images" >
+				<div class="w3-card">
+					<a v-bind:href="'#' + image.id">
+						<img v-bind:src="image.url" style="width:100%; height:220px; object-fit:cover">
+					</a>
+					<div class="w3-container">
+						<h3>{{image.title}}</h3>
+						<p>{{image.description}}</p>
+						<p>Uploaded by: {{image.username}}</p>
+					</div>
 				</div>
 			</div>
 		</div>
-		<input className=""
+		<input class="w3-button w3-block w3-green w3-section w3-padding"
 		v-on:click="loadMoreImages" type="submit" name="more" value="more">
 		<!------------------------------------------------>
 		<!-- imagemodal -->
 		<modal-component
+			class="w3-modal w3-white"
+			v-bind:class="{showModal: currentImageId}"
 			v-if="currentImageId"
 			v-bind:id="currentImageId"
 			v-on:close="closeModal"
@@ -71,50 +101,59 @@
 	</div>
 	<!-- ------------------------------>
 	<!-- vue components -->
-	<!-- </script> -->
+
 	<script id="modal-template" type="text/x-template">
 
-		<article className="">
-			<!-- <header>
+		<article class="">
+			<span
+			class="w3-button w3-xlarge w3-transparent w3-display-topright"
+			v-on:click="closeModal"
+			>×</span>
+			<div class="w3-row">
+				<div class="w3-container w3-half">
+					<img class="" v-bind:src="image.url" style="width:100%">
+				</div>
 
-			</header> -->
-			<main className="">
-				<img className="" v-bind:src="image.url" >
-			</main>
-			<!-- {{error}} -->
-			<!-- comments input -->
-			<aside className=" ">
-				<button className="" v-on:click="closeModal">X</button>
-				<div className="">
-					<h3>Title: {{image.title}}</h3>
+				<div class="w3-container w3-half">
+					<div class="w3-large">{{image.title}}</div>
 					<p>Uploade by: {{image.username}}</p>
 					<p>Createt at: {{image.created_at}}</p>
 
-				</div>
-				<!-- existing comments display -->
-				<div className="" v-if="comments.length > 0">
-					<h1>Comments</h1>
-					<div className="" v-for="comment in comments" >
-						<h3>{{comment.comment}}</h3>
-						<p>{{comment.username}}</p>
-						<p>Created at:  {{comment.created_at}}</p>
+					<div class="" v-if="comments.length > 0">
+						<div class="w3-large w3-border-bottom">Comments:</div>
+						<div class="w3-border-bottom" v-for="comment in comments" >
+							<div class="w3-large ">{{comment.comment}}</div>
+							<p>{{comment.username}}</p>
+							<p>Created at:  {{comment.created_at}}</p>
+						</div>
+					</div>
+					<div
+						class="w3-button w3-large w3-red w3-margin-top"
+						v-on:click="onCommentForm"
+						>Comment</div>
+					<div class="w3-container" v-if="showCommentForm">
+						<input
+							v-model="commentForm.comment"
+							type="textarea"
+							class=""
+							name="comment"
+							placeholder="comment">
+						<input
+							v-model="commentForm.username"
+							type="text"
+							class=""
+							name="username"
+							placeholder="username">
+						<!-- submit button -->
+						<input
+							className=""
+							v-on:click="uploadComment"
+							type="submit"
+							value="Submit">
 					</div>
 				</div>
-				<!-- new comment form -->
-				<div className="">
-					<input v-model="commentForm.comment" type="textarea"
-						className="" name="comment" placeholder="comment">
-					<input v-model="commentForm.username" type="text"
-						className="" name="username" placeholder="username">
-					<!-- submit button -->
-					<input className="" v-on:click="uploadComment"
-						type="submit" value="Submit">
-				</div>
-				<!-- <div v-if="error">
-					{{error}}
-				</div> -->
-			</aside>
-			<!-- comments are displayed here-->
+			</div>
+
 		</article>
 	</script>
 	<!-- js scripts -->
