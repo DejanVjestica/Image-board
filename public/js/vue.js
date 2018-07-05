@@ -8498,10 +8498,10 @@ function transformNode (el, options) {
     var res = parseText(staticClass, options.delimiters);
     if (res) {
       warn(
-        "class=\"" + staticClass + "\": " +
+        "className=\"" + staticClass + "\": " +
         'Interpolation inside attributes has been removed. ' +
         'Use v-bind or the colon shorthand instead. For example, ' +
-        'instead of <div class="{{ val }}">, use <div :class="val">.'
+        'instead of <div className="{{ val }}">, use <div :className="val">.'
       );
     }
   }

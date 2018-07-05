@@ -1,11 +1,9 @@
 // express
-// console.log(app);
 const express = require("express");
 const app = express();
 const db = require("./db");
 const s3 = require("./s3");
 const config = require("./config");
-// public files ----------------------------------------
 
 const multer = require("multer");
 const uidSafe = require("uid-safe");

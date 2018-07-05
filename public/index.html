@@ -9,57 +9,61 @@
 <body>
 	<!------------------------------------------------>
 	<!-- Vue app -->
-	<div id="main" class="flexDisplay flexColumn">
+	<div id="main" className="">
 		<!-- header includes logo and upload form -->
-		<header class="grey wrapper flexDisplay">
-			<h1 class="flex100">{{title}}</h1>
+		<header className="">
+			<h1 className="">{{title}}</h1>
 			<!-- upload form -->
-			<button class="flex30" v-on:click="showUploadForm" type="submit" name="button">Upload Image</button>
-			<!-- <input class="col" v-on:click="showUploadForm"  type="submit" value="Upload Image"> -->
+			<button
+				className=""
+				v-on:click="showUploadForm"
+				type="submit"
+				name="button">Upload Image
+			</button>
 		</header>
 		<section
-			class="uploadForm grey wrapper flexDisplay flexWrap justifySpaceBeetwen"
+			className=""
 			v-if="showForm">
 				<!-- title -->
-				<label class="flex100 marginBottom">Upload image </label>
-				<!-- <span class="required">*</span> -->
+				<label className="">Upload image </label>
+				<!-- <span className="required">*</span> -->
 				<!-- <label for="title">Upload an image</label> -->
-				<input class="flex100 bFlex50 marginBottom mMarginRight"
-					v-model="imgFormInfo.title"
+				<input className=""
+					v-model=""
 					type="text" name="title"
 					placeholder="title">
 				<!-- description -->
-				<input class="flex100 bFlex50 marginBottom mMarginLeft"
+				<input className="flex100 bFlex50 marginBottom mMarginLeft"
 					v-model="imgFormInfo.description"
 					type="text" name="description"
 					placeholder="description">
 				<!-- username -->
-				<input class="flex100 bFlex50 marginBottom "
+				<input className="flex100 bFlex50 marginBottom "
 					v-model="imgFormInfo.username"
 					type="text" name="username"
 					placeholder="username">
 				<!-- upload file -->
-				<input class=" marginLeft"
+				<input className=" marginLeft"
 					v-on:change="selectFile"
 					type="file" name="file">
 				<!-- submit button -->
-				<input class="flex100"
+				<input className="flex100"
 					v-on:click="uploadImage"
 					type="submit" value="Submit">
 			</section>
 		<!------------------------------------------------>
 		<!-- display images -->
-		<div class="mainImageDisplay flexDisplay flexWrap wrapper justifySpaceBeetwen" v-if="images.length > 0">
-			<div class="bFlex50 image marginBottom wrapper" v-for="image in images" >
+		<div className="mainImageDisplay flexDisplay flexWrap wrapper justifySpaceBeetwen" v-if="images.length > 0">
+			<div className="bFlex50 image marginBottom wrapper" v-for="image in images" >
 				<a v-bind:href="'#' + image.id"><img v-bind:src="image.url"></a>
-				<div class="imageInfo">
+				<div className="imageInfo">
 					<h3>{{image.title}}</h3>
 					<p>{{image.description}}</p>
 					<p>Uploaded by: {{image.username}}</p>
 				</div>
 			</div>
 		</div>
-		<input class="flex100"
+		<input className="flex100"
 		v-on:click="loadMoreImages" type="submit" name="more" value="more">
 		<!------------------------------------------------>
 		<!-- imagemodal -->
@@ -74,40 +78,40 @@
 	<!-- </script> -->
 	<script id="modal-template" type="text/x-template">
 
-		<article class="modal flexDisplay grey flexColumn">
+		<article className="modal flexDisplay grey flexColumn">
 			<!-- <header>
 
 			</header> -->
-			<main class="imageModal">
-				<img class="" v-bind:src="image.url" >
+			<main className="imageModal">
+				<img className="" v-bind:src="image.url" >
 			</main>
-			<button class="cancel" v-on:click="closeModal">X</button>
 			<!-- {{error}} -->
 			<!-- comments input -->
-			<aside class="comments ">
-				<div class="wrapper flexDisplay flexColumn">
+			<aside className="comments ">
+				<button className="cancel" v-on:click="closeModal">X</button>
+				<div className="wrapper flexDisplay flexColumn">
 					<h3>Title: {{image.title}}</h3>
 					<p>Uploade by: {{image.username}}</p>
 					<p>Createt at: {{image.created_at}}</p>
 
 				</div>
 				<!-- existing comments display -->
-				<div class="commentsContaier flexContainer  marginBottom" v-if="comments.length > 0">
+				<div className="commentsContaier flexContainer  marginBottom" v-if="comments.length > 0">
 					<h1>Comments</h1>
-					<div class="commentsSingle" v-for="comment in comments" >
+					<div className="commentsSingle" v-for="comment in comments" >
 						<h3>{{comment.comment}}</h3>
 						<p>{{comment.username}}</p>
 						<p>Created at:  {{comment.created_at}}</p>
 					</div>
 				</div>
 				<!-- new comment form -->
-				<div class="commentsForm flexDisplay flexColumn">
+				<div className="commentsForm flexDisplay flexColumn">
 					<input v-model="commentForm.comment" type="textarea"
-						class="flex50  marginBottom mMarginRight" name="comment" placeholder="comment">
+						className="flex50  marginBottom mMarginRight" name="comment" placeholder="comment">
 					<input v-model="commentForm.username" type="text"
-						class="flex50  marginBottom mMarginLeft" name="username" placeholder="username">
+						className="flex50  marginBottom mMarginLeft" name="username" placeholder="username">
 					<!-- submit button -->
-					<input class="flex100" v-on:click="uploadComment"
+					<input className="flex100" v-on:click="uploadComment"
 						type="submit" value="Submit">
 				</div>
 				<!-- <div v-if="error">
