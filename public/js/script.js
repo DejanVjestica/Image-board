@@ -13,7 +13,6 @@ Vue.component("modal-component", {
                 id: null
             },
             commentForm: {
-                // id: "",
                 comment: "",
                 username: ""
             },
@@ -43,11 +42,9 @@ Vue.component("modal-component", {
     watch: {
         id: function() {
             var self = this;
-            console.log("id changed");
             axios
                 .get("/image/" + this.id)
                 .then(function(result) {
-                    console.log(result.data.id);
                     self.image = result.data;
                 })
                 .catch(function(err) {
@@ -57,18 +54,11 @@ Vue.component("modal-component", {
     },
     methods: {
         closeModal: function() {
-            console.log("close modal");
-            console.log(this.id);
             this.$emit("close", this.id);
         },
         uploadComment: function() {
             let self = this;
-            console.log(
-                "upload comment",
-                self.commentForm.comment,
-                self.commentForm.username,
-                self.id
-            );
+            this.showCommentForm = !this.showCommentForm;
             axios
                 .post("/image/comment/", {
                     comment: self.commentForm.comment,
@@ -76,7 +66,6 @@ Vue.component("modal-component", {
                     img_id: self.id
                 })
                 .then(function(result) {
-                    console.log("upComm axios then", result);
                     self.comments.unshift({
                         id: result.data.newComment.id,
                         username: result.data.newComment.username,
@@ -89,8 +78,7 @@ Vue.component("modal-component", {
                 });
         },
         onCommentForm: function() {
-            app.showCommentForm = !app.showCommentForm;
-            console.log("showCommentForm is clicked: ", app.showCommentForm);
+            this.showCommentForm = !this.showCommentForm;
         }
     },
     template: "#modal-template"
@@ -118,7 +106,6 @@ const app = new Vue({
             username: ""
         },
         showForm: false
-        // error: ""
     },
     mounted: function() {
         let me = this;
@@ -129,17 +116,12 @@ const app = new Vue({
     methods: {
         showUploadForm: function() {
             app.showForm = !app.showForm;
-            // console.log(document.getElementById("uploadForm"));
-            // document.getElementById("uploadForm").style.display = "block";
         },
-        // ________________________________-
         loadMoreImages: function() {
             let me = this;
             axios
                 .get(`/more/${me.images.length}`)
                 .then(function(resp) {
-                    console.log("inside axios then: ", resp.data[0]);
-                    console.log(" image array", me.images[0]);
                     me.images = [...me.images, ...resp.data];
                 })
                 .catch(function(err) {
@@ -167,7 +149,6 @@ const app = new Vue({
             axios
                 .post("/upload", fd)
                 .then(results => {
-                    console.log(results.data.image.url);
                     this.images.unshift({
                         id: results.data.image.id,
                         title: this.imgFormInfo.title,
@@ -186,7 +167,6 @@ const app = new Vue({
 // ---- custom function ------
 // ---------------------------
 addEventListener("hashchange", () => {
-    console.log("upload image is clicked");
     const imageId = location.hash.slice(1);
     app.openModal(imageId);
 });

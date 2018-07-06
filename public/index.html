@@ -6,10 +6,6 @@
     <title>Image Board</title>
 	<!-- w3.css framework -->
 	<link rel="stylesheet" type="text/css" href="https://www.w3schools.com/w3css/4/w3.css">
-	<!-- <link rel="stylesheet" href="/w3.css"> -->
-	<!-- <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato"> -->
-	<!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-	<link rel="stylesheet" type="text/css" href="/w3.css">
 	<link rel="stylesheet" type="text/css" href="/styles.css">
 
 </head>
@@ -43,7 +39,6 @@
 							class="w3-button w3-xlarge w3-transparent w3-display-topright"
 							v-on:click="showUploadForm"
 							>×</span>
-
 						</div>
 						<input class="w3-input w3-border w3-margin-bottom w3-margin-top"
 						v-model="imgFormInfo.title"
@@ -101,9 +96,7 @@
 	</div>
 	<!-- ------------------------------>
 	<!-- vue components -->
-
 	<script id="modal-template" type="text/x-template">
-
 		<article class="">
 			<span
 			class="w3-button w3-xlarge w3-transparent w3-display-topright"
@@ -113,25 +106,25 @@
 				<div class="w3-container w3-half">
 					<img class="" v-bind:src="image.url" style="width:100%">
 				</div>
-
 				<div class="w3-container w3-half">
 					<div class="w3-large">{{image.title}}</div>
 					<p>Uploade by: {{image.username}}</p>
 					<p>Createt at: {{image.created_at}}</p>
-
 					<div class="" v-if="comments.length > 0">
 						<div class="w3-large w3-border-bottom">Comments:</div>
 						<div class="w3-border-bottom" v-for="comment in comments" >
 							<div class="w3-large ">{{comment.comment}}</div>
-							<p>{{comment.username}}</p>
-							<p>Created at:  {{comment.created_at}}</p>
+							<p><b>User name:</b> {{comment.username}}</p>
+							<p><b>Created at:</b> {{comment.created_at}}</p>
 						</div>
 					</div>
 					<div
 						class="w3-button w3-large w3-red w3-margin-top"
 						v-on:click="onCommentForm"
-						>Comment</div>
-					<div class="w3-container" v-if="showCommentForm">
+						v-if="!showCommentForm"
+						>Comment
+					</div>
+					<div class="w3-margin-top" v-if="showCommentForm">
 						<input
 							v-model="commentForm.comment"
 							type="textarea"
@@ -153,7 +146,6 @@
 					</div>
 				</div>
 			</div>
-
 		</article>
 	</script>
 	<!-- js scripts -->

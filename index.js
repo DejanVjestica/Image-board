@@ -19,7 +19,6 @@ const diskStorage = multer.diskStorage({
         });
     }
 });
-
 const uploader = multer({
     storage: diskStorage,
     limits: {
@@ -32,7 +31,6 @@ app.use(bodyParser.json());
 app.use(express.static("./public"));
 
 app.get("/images", (req, res) => {
-    // console.log("in route /images ");
     db
         .getImages()
         .then(result => {
@@ -46,7 +44,6 @@ app.get("/images", (req, res) => {
 });
 
 app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
-    // console.log("inside upload: ", req.file);
     db
         .insertImage(
             req.body.title,
@@ -55,7 +52,6 @@ app.post("/upload", uploader.single("file"), s3.upload, (req, res) => {
             config.s3Url + req.file.filename
         )
         .then(function(results) {
-            // console.log("in route /upload then:");
             res.json({
                 image: results.rows[0]
             });
@@ -69,7 +65,6 @@ app.get("/image/:id", (req, res) => {
     db
         .getImageById(req.params.id)
         .then(function(result) {
-            // console.log("/image/:id ", req);
             res.json(result.rows[0]);
         })
         .catch(function(err) {
@@ -77,13 +72,9 @@ app.get("/image/:id", (req, res) => {
         });
 });
 app.post("/image/comment", (req, res) => {
-    // console.log("/image/comment", req.body.img_id);
-    // console.log("/image/comment", req.body.img_id);
-    //
     db
         .uploadComment(req.body.comment, req.body.username, req.body.img_id)
         .then(function(result) {
-            // console.log(result);
             res.json({
                 newComment: result.rows[0]
             });
@@ -97,7 +88,6 @@ app.get("/image/comment/:id", (req, res) => {
     db
         .getImageCommets(req.params.id)
         .then(function(result) {
-            // console.log("/image/:id ", result);
             res.json(result.rows);
         })
         .catch(function(err) {
@@ -122,400 +112,6 @@ app.get("/more/:curAmountOfImgs", (req, res) => {
         });
 });
 // ===============  End of server ==================
-app.listen(8080, () => console.log("Listening"));
+app.listen(8080, () => console.log("Listening on port 8080"));
 // =================================================
 // =================================================
-
-// // express
-// const express = require("express");
-// const app = express();
-// //
-// const hb = require("express-handlebars");
-// const csurf = require("csurf");
-// const cookieSession = require("cookie-session");
-// // custom modules
-// const db = require("./db");
-// const urlPublic = __dirname + "/public";
-// // =====================================================
-// // ==================== Midleware  =====================
-// // =====================================================
-// // handlebars ------------------------------------------
-// app.engine("handlebars", hb());
-// app.set("view engine", "handlebars");
-// // body parser -----------------------------------------
-// app.use(
-//     require("body-parser").urlencoded({
-//         extended: false
-//     })
-// );
-// // cookie parser ---------------------------------------
-// app.use(require("cookie-parser")());
-// // public files ----------------------------------------
-// app.use(express.static(urlPublic));
-// // cookie session ---------------------------------------
-// app.use(
-//     cookieSession({
-//         secret: `I'm always angry.`,
-//         maxAge: 1000 * 60 * 60 * 24 * 14
-//     })
-// );
-// // csurf creates a session ----------------------------
-// app.use(csurf());
-// app.use(function(req, res, next) {
-//     res.locals.csrfToken = req.csrfToken();
-//     res.setHeader("X-Frame", "DENY");
-//     next();
-// });
-// // =====================================================
-// // ==================== Routes  ========================
-// // =====================================================
-// // Home page route, ------------------------------------
-// app.get("/", (req, res) => {
-//     // console.log("route /: ", req.session);
-//     res.redirect("/register");
-// });
-// // register route ---------------------------------------
-// app.get("/register", requireLoggedOut, (req, res) => {
-//     // console.log("get register in");
-//     res.render("register", {
-//         layout: "main",
-//         message: "Please register new acount"
-//     });
-// });
-// app.post("/register", (req, res) => {
-//     //
-//     db
-//         .hashPassword(req.body.password)
-//         .then(function(hashedPassword) {
-//             //
-//             db
-//                 .registerUser(
-//                     req.body.first,
-//                     req.body.last,
-//                     req.body.email,
-//                     hashedPassword
-//                 )
-//                 .then(function(body) {
-//                     // console.log(body);
-//                     let userId = body.rows[0].id;
-//                     let first = req.body.first;
-//                     let last = req.body.last;
-//                     let email = req.body.email;
-//                     // setting cookie session
-//                     req.session.userId = userId;
-//                     req.session.last = last;
-//                     req.session.first = first;
-//                     req.session.email = email;
-//                     res.redirect("/profile");
-//                 })
-//                 .catch(function(e) {
-//                     console.log("register user: ", e);
-//                     res.render("register", {
-//                         layout: "main",
-//                         message: "Please register new acount",
-//                         error: "email already exist, please use diferent one"
-//                     });
-//                 });
-//         })
-//         .catch(function(e) {
-//             console.log("/register: ", e);
-//         });
-//
-//     // ------------------------
-// });
-// // profile route ---------------------------------------
-// app.get("/profile", (req, res) => {
-//     res.render("profile", {
-//         layout: "main",
-//         message: req.session.first + " please tell us more about you self"
-//         // error: "email already exist, please use diferent one"
-//     });
-//     // res.redirect("/register");
-// });
-// app.post("/profile", requireNoUserId, (req, res) => {
-//     // res.redirect("/register");
-//     let age, city, homepage;
-//     db
-//         .profile(
-//             req.body.age,
-//             req.body.city,
-//             req.body.homepage,
-//             req.session.userId
-//         )
-//         .then(function() {
-//             age = req.body.age;
-//             city = req.body.city;
-//             homepage = req.body.homepage;
-//             req.session.age = age;
-//             req.session.city = city;
-//             req.session.homepage = homepage;
-//             // console.log(age, city, homepage);
-//             res.redirect("/petition");
-//         })
-//         .catch(function(e) {
-//             console.log("route /profile: ", e);
-//         });
-// });
-// // editing profile
-// app.get("/profile/edit", (req, res) => {
-//     console.log("EDIT ROUTE");
-//     db
-//         .getProfile(req.session.userId)
-//         .then(function(result) {
-//             res.render("profile_edit", {
-//                 layout: "main",
-//                 signer: result.rows[0],
-//                 message: "You can edit your personal data"
-//             });
-//         })
-//         .catch(function(err) {
-//             console.log("profile edit error  ", err);
-//         });
-// });
-// app.post("/profile/edit", (req, res) => {
-//     const { first, last, email, age, city, homepage, password } = req.body;
-//     const { userId } = req.session;
-//     console.log(first, last, email, homepage, city);
-//     if (password) {
-//         db
-//             .hashPassword(password)
-//             .then(function(hashedPassword) {
-//                 Promise.all([
-//                     db.updateUser(first, last, email, hashedPassword, userId),
-//                     db.updateUserProfile(age, city, homepage, userId)
-//                 ]);
-//             })
-//             .then(function() {
-//                 res.session.first = first;
-//                 res.session.last = last;
-//                 return res.redirect("/thanks");
-//             })
-//             .catch(function(err) {
-//                 console.log(err);
-//             });
-//     } else {
-//         console.log("route/edit: ", first, last, email, homepage, city);
-//         Promise.all([
-//             db.updateUserOutPassword(first, last, email, userId),
-//             db.updateUserProfile(age, city, homepage, userId),
-//             console.log(
-//                 "route/edit, in promiseAll: ",
-//                 first,
-//                 last,
-//                 email,
-//                 homepage,
-//                 city
-//             )
-//         ])
-//             .then(function() {
-//                 res.session.first = first;
-//                 res.session.last = last;
-//                 return res.redirect("/thanks");
-//             })
-//             .catch(function(err) {
-//                 console.log("catch error else: ", err);
-//             });
-//     }
-// });
-// // app.get("/profile/edit", function(req, res) {
-// //     // req.session = null;
-// //     // res.redirect("/");
-// //     db
-// //         .updateUser(req.session.userId)
-// //         .then(function(userProfile) {
-// //             res.render("profile_edit", {
-// //                 layout: "main",
-// //                 message: "Edit your Profile page"
-// //             });
-// //         })
-// //         .catch(function(e) {
-// //             console.log("route / profile edit: ", e);
-// //         });
-// // });
-// // ====================================================
-// // login route ---------------------------------------
-// app.get("/login", requireLoggedOut, (req, res) => {
-//     //
-//     res.render("login", {
-//         layout: "main",
-//         message: "Login to your account"
-//     });
-// });
-//
-// app.post("/login", requireLoggedOut, (req, res) => {
-//     //
-//     // console.log(req.session);
-//
-//     let first, last, userId, sigId, email;
-//     db
-//         .getUserByEmail(req.body.email)
-//         .then(function(result) {
-//             // console.log("result rows 0 ", result.rows[0]);
-//             first = result.rows[0].first;
-//             last = result.rows[0].last;
-//             sigId = result.rows[0].sig_id;
-//             userId = result.rows[0].user_id;
-//             email = req.body.email;
-//
-//             return db
-//                 .checkPassword(req.body.password, result.rows[0].hash_password)
-//                 .then(function(doesMatch) {
-//                     if (!doesMatch) {
-//                         throw new Error(
-//                             console.log("login route after check password")
-//                         );
-//                     } else {
-//                         // console.log("correct");
-//                         req.session.first = first;
-//                         req.session.last = last;
-//                         req.session.userId = userId;
-//                         req.session.sigId = sigId;
-//                         req.session.email = email;
-//
-//                         console.log("route /login: ", req.session);
-//                         return res.redirect("/petition");
-//                     }
-//                 });
-//         })
-//         .catch(function(e) {
-//             console.log("login route get hashPassword", e);
-//             res.render("login", {
-//                 layout: "main",
-//                 message: "Login to your account",
-//                 error: " error"
-//             });
-//         });
-// });
-// // logout raute -------------------------
-// app.get("/logout", function(req, res) {
-//     req.session = null;
-//     console.log("route /logout: ", req.session);
-//     res.redirect("/");
-// });
-// // Petition route ------------------------------------
-// app.get("/petition", requireNoSignature, (req, res) => {
-//     res.render("petition", {
-//         layout: "main",
-//         message: "Sign our petition to help us give animals human"
-//     });
-// });
-// app.post("/petition", requireNoSignature, (req, res) => {
-//     db
-//         .signPetition(req.session.userId, req.body.sig)
-//         .then(function(result) {
-//             let sigId = result.rows[0].id;
-//             req.session.sigId = sigId;
-//             res.redirect("/thanks");
-//             // console.log("user ID    ");
-//             // console.log("sig: ", sigId);
-//             // console.log("session: ", req.session);
-//             // console.log("result: ", result);
-//         })
-//         .catch(function(e) {
-//             console.log("/petition: ", e);
-//         });
-// });
-// // thanks route ----------------------------------------
-// app.get("/thanks", requireSignature, (req, res) => {
-//     // console.log("sigid", req.session.sigId);
-//     db
-//         .getSignatureById(req.session.sigId)
-//         .then(function(result) {
-//             res.render("thanks", {
-//                 layout: "main",
-//                 message:
-//                     "Dear " +
-//                     req.session.first +
-//                     " " +
-//                     req.session.last +
-//                     " thank you for signing our petition",
-//
-//                 signature: result
-//             });
-//         })
-//         .catch(function(e) {
-//             console.log("there is a error in get thanks", e);
-//         });
-// });
-// // signers route --------------------------------------------
-// // app.get("/signers", requireUserId, requireSignature, (req, res) => {});
-// app.get("/signers", requireUserId, requireSignature, (req, res) => {
-//     db
-//         .getSigners()
-//         .then(function(result) {
-//             res.render("signers", {
-//                 layout: "main",
-//                 signers: result.rows,
-//                 message: "List of all partisipants."
-//             });
-//         })
-//         .catch(function(err) {
-//             console.log(err);
-//         });
-// });
-// app.get("/signers/:city", (req, res) => {
-//     // console.log("city");
-//     db.getSignersByCity(req.params.city).then(function(result) {
-//         // console.log(result);
-//         res.render("signers", {
-//             layout: "main",
-//             signers: result.rows
-//         });
-//     });
-// });
-//
-// // this rout adress all request and return 404 if file doesent exist
-// app.get("*", (req, res) => {
-//     res.redirect("/");
-//     // res.render("404", {
-//     //     layout: "main",
-//     //     message: "File you are loocking for does not exist on this server"
-//     // });
-// });
-//
-// // =================================================
-// // ===============  End of server ==================
-// app.listen(process.env.PORT || 8080, () => console.log("Listening"));
-// // =================================================
-// // =================================================
-//
-// // it check if user has sigh petition
-// function requireNoSignature(req, res, next) {
-//     // console.log("reqNoSig: ", req.session);
-//     if (req.session.sigId) {
-//         res.redirect("/thanks");
-//     } else {
-//         next();
-//     }
-// }
-// function requireSignature(req, res, next) {
-//     if (!req.session.sigId) {
-//         res.redirect("/thanks");
-//     } else {
-//         next();
-//     }
-// }
-// // functions that checks if there is a cookie setHeader
-// // it check if user is registerd
-// function requireUserId(req, res, next) {
-//     if (!req.session.userId) {
-//         res.redirect("/register");
-//     } else {
-//         next();
-//     }
-// }
-// function requireLoggedOut(req, res, next) {
-//     if (req.session.userId) {
-//         // console.log("requireLoggedOut");
-//         res.redirect("/petition");
-//     } else {
-//         next();
-//     }
-// }
-// function requireNoUserId(req, res, next) {
-//     if (!req.session.userId) {
-//         res.redirect("/petition");
-//     } else {
-//         next();
-//     }
-// }
